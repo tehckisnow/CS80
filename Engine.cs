@@ -1,3 +1,7 @@
+//new engine
+//TODO:
+//empty constructor for Game
+
 using System;
 using System.Windows.Forms;
 using System.Drawing;
@@ -5,30 +9,50 @@ using System.Drawing;
 
 namespace Cs80
 {
-
-  public class Engine : Form
+  public class Engine
   {
 
-    //graphics object used to draw graphics
-    Graphics g;
-
-    public Engine(Settings settings)
+    public class Game : Form
     {
-      //initialize engine with passed settings
-      Init(settings);
-      //call main game loop from extensions in game file
-      this.Frame();
+      public Settings settings;
+      public Graphics g;
+
+      public Game(Settings settings)
+      {
+        this.settings = settings;
+        Init();
+      }
+
+      void Init()
+      {
+        //Application.SetHighDpiMode(HighDpiMode.SystemAware);
+        Application.EnableVisualStyles();
+        Text = settings.titleText;
+        ClientSize = new Size(settings.width, settings.height);
+        Paint += new PaintEventHandler(OnPaint);
+        CenterToScreen();
+      }
+
+      public void Start()
+      {
+        Application.Run(this);
+        //this.Frame();
+      }
+
+      private void OnPaint(object sender, PaintEventArgs e)
+      {
+        g = e.Graphics;
+      }
+
+      public static void DrawSprite(Image image, float destinationX, float destinationY, float targetX, float targetY, float width, float height)
+      {
+        RectangleF sourceRect = new RectangleF(targetX, targetY, width, height);
+        //g.DrawImage(image, destinationX, destinationY, sourceRect, GraphicsUnit.Pixel);
+      }
+
     }
 
-    //uses default settings
-    public Engine()
-    {
-      Settings settings = new Settings();
-      Init(settings);
-      this.Frame();
-    }
-
-    //default settings
+     //default settings
     public class Settings
     {
       public int width = 800;
@@ -41,46 +65,16 @@ namespace Cs80
       }
     }
 
-    //call to start game
-    public void Start()
+    public class Assets
     {
-      Application.Run(this);
-    }
-
-    //create an image object
-    public Image ImageAsset(string file)
-    {
-      return Image.FromFile(file);
-    }
-
-    //draw an image object
-    public void DrawSprite(Image image, float destinationX, float destinationY, float targetX, float targetY, float width, float height)
-    {
-      RectangleF sourceRect = new RectangleF(targetX, targetY, width, height);
-      g.DrawImage(image, destinationX, destinationY, sourceRect, GraphicsUnit.Pixel);
-    }
-
-    //initialization of engine
-    private void Init(Settings settings)
-    {
-      //Application.SetHighDpiMode(HighDpiMode.SystemAware);
-      Application.EnableVisualStyles();
-      Text = settings.titleText;
-      ClientSize = new Size(settings.width, settings.height);
-      Paint += new PaintEventHandler(OnPaint);
-      CenterToScreen();
-    }
-
-    //create and store graphics object from OnPaint event
-    private void OnPaint(object sender, PaintEventArgs e)
-    {
-      g = e.Graphics;
+      public static Image ImageAsset(string file)
+      {
+        return Image.FromFile(file);
+      }
     }
 
   }
-
 }
-
 
 //-----------------
 //notes
