@@ -1,35 +1,22 @@
-//new game.cs
 using System;
-using Cs80;
+using System.Drawing;
 
 class NewGame
 {
   static void Main(string[] args)
   {
     Engine.Settings settings = new Engine.Settings();
-    settings.height = 450;
-    settings.width = 800;
-    settings.titleText = "success!";
-    
-    Engine.Game game1 = new Engine.Game(settings);
+    //settings.height = 450;
+    //settings.width = 800;
+    //settings.titleText = "yay";
 
-    Console.Write(game1.settings.width);
+    Engine.Game game = new Engine.Game(settings);
 
-    var spriteSheet = Engine.Assets.ImageAsset("spritesheet.png");
+    //Image spriteSheet1 = Engine.Assets.ImageAsset("spritesheet.png");
 
-    game1.Start();
-  }
+    game.DrawSprite("spritesheet.png", 0, 0);
+    game.DrawSprite("spritesheet.png", 50, 50);
 
-}
-
-//------------
-//extension methods
-//  these methods are added to engine instance
-public static class extensions
-{
-  public static void Frame(this Engine.Game game)
-  {
-    ////var spriteSheet = engine.ImageAsset("spritesheet.png");
-    //game.DrawSprite(spriteSheet, 16, 16, 16, 16, 16, 16);
+    game.Start();
   }
 }
